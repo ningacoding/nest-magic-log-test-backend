@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { UserLoginDto } from '../dto/user.login.dto';
 import { JwtService } from '@nestjs/jwt';
-import { AuthConstants } from '../constants/auth.constants';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private configService: ConfigService,
     private usersService: UsersService,
     private jwtService: JwtService,
   ) {}
@@ -34,7 +35,7 @@ export class AuthService {
           roleId: payload.roleId,
         },
         {
-          secret: AuthConstants.jwtOptions.secret,
+          secret: this.configService.get<string>('jwt.secret'),
         },
       ),
     };
