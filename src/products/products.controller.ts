@@ -30,7 +30,11 @@ export class ProductsController {
 
   @Post('/search')
   search(@Body() searchProductDto: SearchProductDto, @Request() req) {
-    return this.productsService.search(req.user.id, searchProductDto);
+    return this.productsService.search(
+      req.user.id,
+      req.user.roleId,
+      searchProductDto,
+    );
   }
 
   @Get()

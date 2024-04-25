@@ -6,13 +6,23 @@ import { DatabaseModule } from '../dababase/database.module';
 import { v4 as uuidv4 } from 'uuid';
 import Role from '../entities/role.entity';
 import User from '../entities/user.entity';
+import { ConfigModule } from '@nestjs/config';
+import configuration from '../config/configuration';
+import { AuthModule } from '../auth/auth.module';
 
 describe('UsersController', () => {
   let usersController: UsersController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [DatabaseModule],
+      imports: [
+        AuthModule,
+        DatabaseModule,
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [configuration],
+        }),
+      ],
       controllers: [UsersController],
       providers: [UsersService],
     }).compile();

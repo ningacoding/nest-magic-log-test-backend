@@ -45,7 +45,11 @@ export class ProductsService {
     });
   }
 
-  async search(userId: number, searchProductDto: SearchProductDto) {
+  async search(
+    userId: number,
+    roleId: number,
+    searchProductDto: SearchProductDto,
+  ) {
     const where = {
       [Op.or]: {
         name: {
@@ -58,6 +62,9 @@ export class ProductsService {
     };
     if (searchProductDto.providersIds.length > 0) {
       where['userId'] = searchProductDto.providersIds;
+    }
+    if (roleId === RoleEnum.Seller) {
+      where['userId'] = userId;
     }
     return Product.findAll({
       where,
